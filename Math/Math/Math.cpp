@@ -1,5 +1,8 @@
 #include <iostream>
 #include <Windows.h>
+#include <string>
+
+#include "Settings.h"
 
 
 void ClearConsole()
@@ -41,28 +44,30 @@ void SetConsoleSize(int width, int height)
 
 int main(int argc, char** argv)
 {
-    ClearConsole();
-    SetCursorStartPos();
+    Settings settings(argc, argv);
+    int width = settings.GetWidth();
+    int height = settings.GetHeight();
 
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
     DWORD mode;
     GetConsoleMode(hConsole, &mode);
     SetConsoleMode(hConsole, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
 
-    SetConsoleSize(100, 20);
+    SetConsoleSize(width, height);
+    ClearConsole();
+    SetCursorStartPos();
 
     HideCursor();
-    for (int i = 0; i < 20; i++)
+
+    for (int i = 0; i < height; i++)
     {
-        for (int j = 0; j < 100; j++)
+        for (int j = 0; j < width; j++)
         {
             std::cout << '.';
         }
+        std::cout << std::endl;
     }
 
-
     ShowCursor();
-
     return 0;
 }
