@@ -1,46 +1,8 @@
 #include <iostream>
-#include <Windows.h>
 #include <string>
 
 #include "Settings.h"
-
-
-void ClearConsole()
-{
-    std::cout << "\x1B[2J";
-}
-
-void ShowCursor()
-{
-    std::cout << "\x1B[?25h";
-}
-
-void HideCursor()
-{
-    std::cout << "\x1B[?25l";
-}
-
-void SetCursorStartPos()
-{
-    std::cout << "\x1B[H";
-}
-
-void SetConsoleSize(int width, int height)
-{
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
-    COORD bufferSize;
-    bufferSize.X = width;
-    bufferSize.Y = height;
-    SetConsoleScreenBufferSize(hConsole, bufferSize);
-
-    SMALL_RECT windowSize;
-    windowSize.Left = 0;
-    windowSize.Top = 0;
-    windowSize.Right = width - 1;
-    windowSize.Bottom = height - 1;
-    SetConsoleWindowInfo(hConsole, TRUE, &windowSize);
-}
+#include "Screen.h"
 
 int main(int argc, char** argv)
 {
@@ -48,16 +10,13 @@ int main(int argc, char** argv)
     int width = settings.GetWidth();
     int height = settings.GetHeight();
 
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    DWORD mode;
-    GetConsoleMode(hConsole, &mode);
-    SetConsoleMode(hConsole, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
+    Screen screen;
 
-    SetConsoleSize(width, height);
-    ClearConsole();
-    SetCursorStartPos();
+    screen.SetConsoleSize(width, height);
+    screen.ClearConsole();
+    screen.SetCursorStartPos();
 
-    HideCursor();
+    screen.HideCursor();
 
     for (int i = 0; i < height; i++)
     {
@@ -68,6 +27,6 @@ int main(int argc, char** argv)
         std::cout << std::endl;
     }
 
-    ShowCursor();
+    screen.ShowCursor();
     return 0;
 }
