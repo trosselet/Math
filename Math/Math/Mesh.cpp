@@ -1,6 +1,6 @@
 #include "Mesh.h"
 
-Mesh::Mesh()
+Mesh::Mesh(unsigned int meshResolution)
 {
 	m_verticies.push_back({ -1, -1, 0 });
 	m_verticies.push_back({ -1,  1, 0 });

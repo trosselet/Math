@@ -19,7 +19,7 @@ int main(int argc, char** argv)
 
     screen.HideCursor();
 
-    Mesh mesh;
+    Mesh mesh(settings.GetMeshResolution());
     mesh.Debug();
 
     /*screen.Display('.');*/

@@ -24,7 +24,7 @@ struct Vertex
 class Mesh
 {
 public:
-	Mesh();
+	Mesh(unsigned int meshResolution);
 	~Mesh();
 
 	void Debug();

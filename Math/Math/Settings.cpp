@@ -21,5 +21,9 @@ void Settings::ParseArguments(int argc, char** argv)
         {
             m_height = std::atoi(argv[++i]);
         }
+        else if (arg == "-r" && i + 1 < argc)
+        {
+            m_meshResolution = std::atoi(argv[++i]);
+        }
     }
 }

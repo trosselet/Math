@@ -8,10 +8,12 @@ public:
 
     int GetWidth() const { return m_width; }
     int GetHeight() const { return m_height; }
+    int GetMeshResolution() const { return m_meshResolution; }
 
 private:
     void ParseArguments(int argc, char** argv);
 
     int m_width = 100;
     int m_height = 20;
+    unsigned int m_meshResolution = 32;
 };
