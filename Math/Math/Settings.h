@@ -15,5 +15,5 @@ private:
 
     int m_width = 100;
     int m_height = 20;
-    unsigned int m_meshResolution = 32;
+    int m_meshResolution;
 };

@@ -24,12 +24,21 @@ struct Vertex
 class Mesh
 {
 public:
-	Mesh(unsigned int meshResolution);
+	Mesh(int meshResolution);
 	~Mesh();
 
 	void Debug();
 
+	void GenerateCircle(float radius);
+	void GenerateSquare(float size);
+	void GenerateHalfCircle(float radius);
+	void GenerateRectangle(float width, float height);
+
+private:
+	void Generate2dResolution(float x, float y);
+
 private:
 	std::vector<Vertex> m_verticies;
+	int m_resolution;
 };
 
