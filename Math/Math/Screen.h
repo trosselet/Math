@@ -13,6 +13,7 @@ public:
 	void ShowCursor();
 	void HideCursor();
 	void SetCursorStartPos();
+	void Display(char character);
 
 
 private:

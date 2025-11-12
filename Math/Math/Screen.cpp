@@ -34,6 +34,18 @@ void Screen::SetCursorStartPos()
 	std::cout << "\x1B[H";
 }
 
+void Screen::Display(char character)
+{
+    for (int i = 0; i < m_bufferSize.Y; i++)
+    {
+        for (int j = 0; j < m_bufferSize.X; j++)
+        {
+            std::cout << character;
+        }
+        std::cout << std::endl;
+    }
+}
+
 void Screen::SetConsoleSize(int width, int height)
 {
     m_hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
