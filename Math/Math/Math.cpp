@@ -3,6 +3,7 @@
 
 #include "Settings.h"
 #include "Screen.h"
+#include "Mesh.h"
 
 int main(int argc, char** argv)
 {
@@ -18,7 +19,10 @@ int main(int argc, char** argv)
 
     screen.HideCursor();
 
-    screen.Display('.');
+    Mesh mesh;
+    mesh.Debug();
+
+    /*screen.Display('.');*/
 
     screen.ShowCursor();
     return 0;
