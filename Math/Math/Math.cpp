@@ -20,10 +20,8 @@ int main(int argc, char** argv)
     screen.HideCursor();
 
     Mesh mesh(settings.GetMeshResolution());
-    mesh.GenerateSquare(5);
+    mesh.GenerateCircle(2);
     mesh.Debug();
-
-    /*screen.Display('.');*/
 
     screen.ShowCursor();
     return 0;

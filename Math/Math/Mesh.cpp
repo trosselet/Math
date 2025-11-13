@@ -1,5 +1,7 @@
 #include "Mesh.h"
 
+static constexpr double const& PI = 3.1415926353589f;
+
 Mesh::Mesh(int meshResolution) 
 	: m_resolution(meshResolution)
 {
@@ -19,6 +21,9 @@ void Mesh::Debug()
 
 void Mesh::GenerateCircle(float radius)
 {
+	GenerateSector(radius, 2 * PI);
+
+
 }
 
 void Mesh::GenerateSquare(float size)
@@ -28,6 +33,7 @@ void Mesh::GenerateSquare(float size)
 
 void Mesh::GenerateHalfCircle(float radius)
 {
+	GenerateSector(radius, PI);
 }
 
 void Mesh::GenerateRectangle(float width, float height)
@@ -43,6 +49,30 @@ void Mesh::GenerateRectangle(float width, float height)
 		{
 			float y = -height / 2.f + j * (height / ny);
 			m_verticies.emplace_back(x, y, 0.f);
+		}
+	}
+}
+
+void Mesh::GenerateSector(float radius, float angle)
+{
+	m_verticies.clear();
+
+	float x;
+	float y;
+
+	for (int i = 0; i < m_resolution; i++)
+	{
+		float r = (radius * i) / (m_resolution - 1);
+
+		for (int j = 0; j < m_resolution; j++)
+		{
+
+			float theta = (angle * j) / (m_resolution - 1);
+			x = r * cos(theta);
+			y = r * sin(theta);
+
+			m_verticies.emplace_back(x, y, 0.f);
+
 		}
 	}
 }

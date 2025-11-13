@@ -35,6 +35,9 @@ public:
 	void GenerateRectangle(float width, float height);
 
 private:
+	void GenerateSector(float radius, float angle);
+
+private:
 	std::vector<Vertex> m_verticies;
 	int m_resolution;
 };
