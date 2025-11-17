@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "Mesh.h"
+
 Screen::Screen() : m_bufferSize(), m_windowSize()
 {
     m_hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -44,6 +46,11 @@ void Screen::Display(char character)
         }
         std::cout << std::endl;
     }
+}
+
+void Screen::DisplayMesh(Mesh const& mesh)
+{
+
 }
 
 void Screen::SetConsoleSize(int width, int height)

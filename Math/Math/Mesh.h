@@ -34,6 +34,8 @@ public:
 	void GenerateHalfCircle(float radius);
 	void GenerateRectangle(float width, float height);
 
+	std::vector<Vertex> const& GetVertices() const;
+
 private:
 	void GenerateSector(float radius, float angle);
 

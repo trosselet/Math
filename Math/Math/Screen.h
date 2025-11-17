@@ -2,6 +2,8 @@
 
 #include <Windows.h>
 
+class Mesh;
+
 class Screen
 {
 public:
@@ -14,7 +16,7 @@ public:
 	void HideCursor();
 	void SetCursorStartPos();
 	void Display(char character);
-
+	void DisplayMesh(Mesh const& mesh);
 
 private:
 	HANDLE		m_hConsole;
