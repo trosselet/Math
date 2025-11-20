@@ -1,80 +1,62 @@
+#include <cmath>
 #include "Mesh.h"
+#include "Settings.h"
 
-static constexpr double PI = 3.141592653589793;
+constexpr float PI = 3.14159265f;
 
-
-Mesh::Mesh(int meshResolution) 
-	: m_resolution(meshResolution)
+Mesh::Mesh(Settings const& settings)
+    : m_resolution(settings.GetMeshResolution())
 {
-}
-
-Mesh::~Mesh()
-{
-}
-
-void Mesh::Debug()
-{
-	for (auto& vertex : m_verticies)
-	{
-		vertex.Debug();
-	}
 }
 
 void Mesh::GenerateCircle(float radius)
 {
-	GenerateSector(radius, 2 * PI);
-}
-
-void Mesh::GenerateSquare(float size)
-{
-	GenerateRectangle(size, size);
+    _GenerateSector(radius, 2 * PI);
 }
 
 void Mesh::GenerateHalfCircle(float radius)
 {
-	GenerateSector(radius, PI);
+    _GenerateSector(radius, PI);
 }
 
 void Mesh::GenerateRectangle(float width, float height)
 {
-	m_verticies.clear();
-	int nx = m_resolution;
-	int ny = m_resolution;
-
-	for (int i = 0; i < nx; ++i)
-	{
-		float x = -width / 2.f + i * (width / nx);
-		for (int j = 0; j <= ny; ++j)
-		{
-			float y = -height / 2.f + j * (height / ny);
-			m_verticies.emplace_back(x, y, 0.f);
-		}
-	}
+    m_vertices.resize(m_resolution * m_resolution);
+    for (int i = 0; i < m_resolution; i++)
+    {
+        for (int j = 0; j < m_resolution; j++)
+        {
+            m_vertices[m_resolution * i + j].x = (1.f * i / (m_resolution - 1) - 0.5f) * width;
+            m_vertices[m_resolution * i + j].y = (1.f * j / (m_resolution - 1) - 0.5f) * height;
+            m_vertices[m_resolution * i + j].z = 0.f;
+        }
+    }
 }
-
-std::vector<Vertex> const& Mesh::GetVertices() const
+void Mesh::GenerateSquare(float side)
 {
-	return m_verticies;
+    GenerateRectangle(side, side);
 }
 
-void Mesh::GenerateSector(float radius, float angle)
+void Mesh::Debug() const
 {
-	m_verticies.clear();
-	m_verticies.reserve(m_resolution * m_resolution);
-
-	for (int i = 0; i < m_resolution; ++i)
-	{
-		float r = radius * (static_cast<float>(i) / (m_resolution - 1));
-
-		for (int j = 0; j < m_resolution; ++j)
-		{
-			float theta = angle * (static_cast<float>(j) / (m_resolution - 1));
-			float x = r * std::cos(theta);
-			float y = r * std::sin(theta);
-
-			m_verticies.emplace_back(x, y, 0.f);
-		}
-	}
+    for (Vertex const& vertex : m_vertices)
+    {
+        vertex.Debug();
+    }
 }
 
-
+void Mesh::_GenerateSector(float radius, float angle)
+{
+    m_vertices.resize(m_resolution * m_resolution);
+    for (int i = 0; i < m_resolution; i++)
+    {
+        float r = (radius * i) / (m_resolution - 1);
+        for (int j = 0; j < m_resolution; j++)
+        {
+            float theta = (angle * j) / (m_resolution - 1);
+            m_vertices[m_resolution * i + j].x = r * std::cos(theta);
+            m_vertices[m_resolution * i + j].y = r * std::sin(theta);
+            m_vertices[m_resolution * i + j].z = 0.f;
+        }
+    }
+}

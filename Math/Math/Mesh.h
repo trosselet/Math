@@ -1,46 +1,31 @@
 #pragma once
+#include <cstdio>
 #include <vector>
-#include <iostream>
+
+class Settings;
 
 struct Vertex
 {
-	float x;
-	float y;
-	float z;
-
-	inline Vertex(float _x, float _y, float _z)
-	{
-		x = _x;
-		y = _y;
-		z = _z;
-	}
-
-	inline void Debug()
-	{
-		std::cout << "X: " << x << " Y: " << y << " Z: " << z << std::endl;
-	}
+    void Debug() const { std::printf("[x=%5.2f, y=%5.2f, z=%5.2f]\n", x, y, z); }
+    float x;
+    float y;
+    float z;
 };
 
 class Mesh
 {
 public:
-	Mesh(int meshResolution);
-	~Mesh();
-
-	void Debug();
-
-	void GenerateCircle(float radius);
-	void GenerateSquare(float size);
-	void GenerateHalfCircle(float radius);
-	void GenerateRectangle(float width, float height);
-
-	std::vector<Vertex> const& GetVertices() const;
+    Mesh(Settings const& settings);
+    void GenerateCircle(float radius);
+    void GenerateHalfCircle(float radius);
+    void GenerateRectangle(float width, float height);
+    void GenerateSquare(float side);
+    void Debug() const;
 
 private:
-	void GenerateSector(float radius, float angle);
+    void _GenerateSector(float radius, float angle);
 
 private:
-	std::vector<Vertex> m_verticies;
-	int m_resolution;
+    std::vector<Vertex> m_vertices;
+    int m_resolution;
 };
-
