@@ -39,18 +39,9 @@ int main(int argc, char** argv)
     Screen screen(settings);
     screen.Display();
     Mesh mesh(settings);
-    mesh.GenerateRectangle(2.f, 4.f);
-    std::cout << "Rectangle 2x4:" << std::endl;
-    mesh.Debug();
-    mesh.GenerateSquare(6.f);
-    std::cout << "Square 6x6:" << std::endl;
-    mesh.Debug();
-    mesh.GenerateCircle(2.f);
-    std::cout << "Circle radius 2:" << std::endl;
-    mesh.Debug();
-    mesh.GenerateHalfCircle(1.f);
-    std::cout << "Half Circle radius 1:" << std::endl;
-    mesh.Debug();
+    mesh.GenerateSquare(4);
+    screen.Display(mesh);
+
     SetCursorVisible(true);
     return 0;
 }

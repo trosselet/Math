@@ -45,6 +45,11 @@ void Mesh::Debug() const
     }
 }
 
+std::vector<Vertex> Mesh::GetVertices() const
+{
+    return m_vertices;
+}
+
 void Mesh::_GenerateSector(float radius, float angle)
 {
     m_vertices.resize(m_resolution * m_resolution);
