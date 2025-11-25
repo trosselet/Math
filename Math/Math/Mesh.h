@@ -21,7 +21,7 @@ public:
     void GenerateRectangle(float width, float height);
     void GenerateSquare(float side);
     void Debug() const;
-    std::vector<Vertex> GetVertices() const;
+    std::vector<Vertex> const& GetVertices() const;
 
 private:
     void _GenerateSector(float radius, float angle);

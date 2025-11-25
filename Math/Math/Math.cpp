@@ -39,7 +39,8 @@ int main(int argc, char** argv)
     Screen screen(settings);
     screen.Display();
     Mesh mesh(settings);
-    mesh.GenerateSquare(4);
+
+    mesh.GenerateRectangle(4, 2);
     screen.Display(mesh);
 
     SetCursorVisible(true);

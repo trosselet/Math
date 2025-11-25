@@ -45,7 +45,7 @@ void Mesh::Debug() const
     }
 }
 
-std::vector<Vertex> Mesh::GetVertices() const
+std::vector<Vertex> const& Mesh::GetVertices() const
 {
     return m_vertices;
 }

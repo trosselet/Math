@@ -23,6 +23,7 @@ private:
     char m_projection;
     float m_zPosition;
     float m_meshZPosition;
+    std::vector<float> m_oozBuffer;
    
 };
 
