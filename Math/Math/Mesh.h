@@ -14,19 +14,19 @@ struct Vertex
 
 class Mesh
 {
-public:
+    public:
     Mesh(Settings const& settings);
+    std::vector<Vertex> const& GetVertices() const { return m_vertices; }
     void GenerateCircle(float radius);
     void GenerateHalfCircle(float radius);
     void GenerateRectangle(float width, float height);
     void GenerateSquare(float side);
     void Debug() const;
-    std::vector<Vertex> const& GetVertices() const;
 
-private:
+    private:
     void _GenerateSector(float radius, float angle);
 
-private:
+    private:
     std::vector<Vertex> m_vertices;
     int m_resolution;
 };

@@ -1,25 +1,26 @@
 #pragma once
+
 class Settings
 {
-public:
+    public:
     Settings(int argc, char** argv);
     int GetScreenWidth() const { return m_screenWidth; }
     int GetScreenHeight() const { return m_screenHeight; }
+    char GetScreenBackground() const { return m_screenBackground; }
+    float GetScreenPosition() const { return m_screenPosition; }
+    char GetScreenMeshProjection() const { return m_screenMeshProjection; }
     int GetMeshResolution() const { return m_meshResolution; }
-    int GetScreenPosition() const { return m_screenPosition; }
-    int GetMeshPosition() const { return m_meshPosition; }
-    char GetScreenMeshProjection() const { return m_meshProjection; }
-    char GetScreenMeshBackground() const { return m_screenBackground; }
+    float GetMeshPosition() const { return m_meshPosition; }
 
-private:
+    private:
     void _ParseArguments(int argc, char** argv);
 
-private:
+    private:
     int m_screenWidth;
     int m_screenHeight;
-    float m_screenPosition;
-    int m_meshResolution;
     char m_screenBackground;
-    char m_meshProjection;
+    float m_screenPosition;
+    char m_screenMeshProjection;
+    int m_meshResolution;
     float m_meshPosition;
 };
