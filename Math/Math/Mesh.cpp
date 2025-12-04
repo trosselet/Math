@@ -46,9 +46,9 @@ void Mesh::GenerateTorus(float majorRadius, float minorRadius)
         for(int j = 0; j < m_resolution; j++)
         {
             float phi = (2 * PI * j) / (m_resolution - 1);
-            m_vertices[m_resolution * i + j].x = (majorRadius + minorRadius * std::cos(phi)) * std::cos(theta);
-            m_vertices[m_resolution * i + j].y = (majorRadius + minorRadius * std::cos(phi)) * std::sin(theta);
-            m_vertices[m_resolution * i + j].z = minorRadius * std::sin(phi);
+            m_vertices[m_resolution * i + j].x = -(majorRadius * std::cos(theta) + minorRadius) * std::cos(phi);
+            m_vertices[m_resolution * i + j].y = (majorRadius * std::sin(theta));
+            m_vertices[m_resolution * i + j].z = (majorRadius * std::cos(theta) + minorRadius) * std::sin(phi);
         }
 	}
 }

@@ -40,9 +40,17 @@ int main(int argc, char** argv)
     screen.Display();
     Mesh mesh(settings);
 
-    mesh.GenerateTorus(10, 1);
-	mesh.Rotate(90.f, Axis::Z);
+    mesh.GenerateRectangle(20, 20);
+	mesh.Rotate(45.f, Axis::Z);
 	//mesh.Rotate(90.f, Axis::Y);
+	//mesh.Rotate(90.f, Axis::X);
+    screen.Display(mesh);
+    
+    
+    mesh.GenerateTorus(3, 2);
+	//mesh.Rotate(90.f, Axis::X);
+	//mesh.Rotate(90.f, Axis::Y);
+	mesh.Rotate(90.f, Axis::Z);
     screen.Display(mesh);
 
     SetCursorVisible(true);
