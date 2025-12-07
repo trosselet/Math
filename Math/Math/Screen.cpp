@@ -62,8 +62,8 @@ void Screen::_ProjectInCenterScreenSpace(Vertex& vertex)
 
 void Screen::_ProjectInTopLeftScreenSpace(Vertex& vertex)
 {
-    vertex.x += m_width/2;
-    vertex.y += m_height/2;
+    vertex.x += m_width / 2;
+    vertex.y += m_height / 2;
 }
 
 bool Screen::_IsVertexInScreen(int u, int v)
