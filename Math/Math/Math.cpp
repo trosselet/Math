@@ -1,5 +1,6 @@
 #include <iostream>
 #include <windows.h> // For console settings
+#include <signal.h>
 #include "Settings.h"
 #include "Screen.h"
 #include "Mesh.h"
@@ -14,8 +15,7 @@ void InitConsole()
 
 void ClearConsole()
 {
-    std::cout << "\x1b[2J"; // Remove all characters in console
-    std::cout << "\x1b[H"; // Set cursor pos to "home" position (0,0)
+    std::cout << "\x1b[2J\x1b[3J\x1b[H";
 }
 
 void SetCursorVisible(bool visible)
@@ -30,11 +30,23 @@ void SetCursorVisible(bool visible)
     }
 }
 
+void OnKill(int signum)
+{
+    ClearConsole();
+    SetCursorVisible(true);
+    exit(signum);
+}
+
+
 int main(int argc, char** argv)
 {
+
+    signal(SIGINT, OnKill);
+
     InitConsole();
     ClearConsole();
     SetCursorVisible(false);
+
     Settings settings(argc, argv);
     Screen screen(settings);
     screen.Display();
@@ -49,6 +61,8 @@ int main(int argc, char** argv)
         mesh.Rotate(settings.GetMeshRotationYPerFrame(), Axis::Y);
         mesh.Rotate(settings.GetMeshRotationZPerFrame(), Axis::Z);
         screen.Display(mesh);
+
+        std::cout << "\x1b[H";
     }
 
     SetCursorVisible(true);
