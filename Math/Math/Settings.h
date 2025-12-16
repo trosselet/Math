@@ -15,6 +15,9 @@ public:
     float GetMeshRotationYPerFrame() const { return m_meshRotationYPerFrame; }
     float GetMeshRotationZPerFrame() const { return m_meshRotationZPerFrame; }
     int GetFrameDuration() const { return m_frameDuration; }
+    float GetLightDirectionX() const { return m_lightDirectionX; }
+    float GetLightDirectionY() const { return m_lightDirectionY; }
+    float GetLightDirectionZ() const { return m_lightDirectionZ; }
 
 private:
     void _ParseArguments(int argc, char** argv);
@@ -31,4 +34,7 @@ private:
     float m_meshRotationYPerFrame;
     float m_meshRotationZPerFrame;
     int m_frameDuration;
+    float m_lightDirectionX;
+    float m_lightDirectionY;
+    float m_lightDirectionZ;
 };

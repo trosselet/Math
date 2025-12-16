@@ -1,6 +1,9 @@
+#define _USE_MATH_DEFINES
+
 #include <iostream>
 #include <windows.h> // For console settings
-#include <signal.h>
+#include <signal.h> // To intercept kill ctrl+c
+#include <cmath>
 #include "Settings.h"
 #include "Screen.h"
 #include "Mesh.h"
@@ -13,9 +16,15 @@ void InitConsole()
     SetConsoleMode(hConsole, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
 }
 
+void SetCursorToHomePosition()
+{
+    std::cout << "\x1b[H"; // Set cursor pos to "home" position (0,0)
+}
+
 void ClearConsole()
 {
-    std::cout << "\x1b[2J\x1b[3J\x1b[H";
+    std::cout << "\x1b[2J"; // Remove all characters in console
+    SetCursorToHomePosition();
 }
 
 void SetCursorVisible(bool visible)
@@ -37,34 +46,23 @@ void OnKill(int signum)
     exit(signum);
 }
 
-
 int main(int argc, char** argv)
 {
-
     signal(SIGINT, OnKill);
-
     InitConsole();
     ClearConsole();
     SetCursorVisible(false);
-
     Settings settings(argc, argv);
     Screen screen(settings);
-    screen.Display();
-    Mesh mesh(settings);    
-    
-    mesh.GenerateTorus(20.f, 2.f);
-
+    Mesh mesh(settings);
+    mesh.GenerateTorus(4.f, 0.9f);
     while (true)
     {
-        ClearConsole();
+        SetCursorToHomePosition();
         mesh.Rotate(settings.GetMeshRotationXPerFrame(), Axis::X);
         mesh.Rotate(settings.GetMeshRotationYPerFrame(), Axis::Y);
         mesh.Rotate(settings.GetMeshRotationZPerFrame(), Axis::Z);
         screen.Display(mesh);
-
-        std::cout << "\x1b[H";
     }
-
-    SetCursorVisible(true);
     return 0;
 }

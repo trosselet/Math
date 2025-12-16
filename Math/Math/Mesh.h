@@ -15,48 +15,67 @@ enum class Axis
 
 struct Vertex
 {
-    void Debug() const { std::printf("[x=%5.2f, y=%5.2f, z=%5.2f]\n", x, y, z); }
+    void Debug() const { std::printf("[x=%5.2f, y=%5.2f, z=%5.2f]\n [x=%5.2f, y=%5.2f, z=%5.2f]\n", x, y, z, nx, ny, nz); }
     float x;
     float y;
     float z;
+
+    float nx;
+    float ny;
+    float nz;
 
     void Rotate(float angle, Axis axis)
     {
 		angle = angle * PI / 180.f;
         float c = std::cos(angle);
         float s = std::sin(angle);
-        float nx, ny, nz;
+        float newx, newy, newz, newnx, newny, newnz;
 
         switch (axis)
         {
         case Axis::X:
-            nx = x;
-            ny = y * c - z * s;
-            nz = y * s + z * c;
+            newx = x;
+            newy = y * c - z * s;
+            newz = y * s + z * c;
+            newnx = x;
+            newny = y * c - z * s;
+            newnz = y * s + z * c;
             break;
 
         case Axis::Y:
-            nx = x * c + z * s;
-            ny = y;
-            nz = -x * s + z * c;
+            newx = x * c + z * s;
+            newnx = x * c + z * s;
+            newy = y;
+            newny = y;
+            newz = -x * s + z * c;
+            newnz = -x * s + z * c;
             break;
 
         case Axis::Z:
-            nx = x * c - y * s;
-            ny = x * s + y * c;
-            nz = z;
+            newx = x * c - y * s;
+            newnx = x * c - y * s;
+            newy = x * s + y * c;
+            newny = x * s + y * c;
+            newz = z;
+            newnz = z;
             break;
 
         default:
-            nx = x; 
-            ny = y; 
-            nz = z;
+            newx = x; 
+            newnx = x; 
+            newy = y; 
+            newny = y; 
+            newz = z;
+            newnz = z;
             break;
         }
 
-        x = nx; 
-        y = ny; 
-        z = nz;
+        x = newx; 
+        y = newy; 
+        z = newz;
+        nx = newnx; 
+        ny = newny; 
+        nz = newnz;
     }
 };
 
