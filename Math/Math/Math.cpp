@@ -7,6 +7,7 @@
 #include "Settings.h"
 #include "Screen.h"
 #include "Mesh.h"
+#include "Light.h"
 
 void InitConsole()
 {
@@ -56,13 +57,16 @@ int main(int argc, char** argv)
     Screen screen(settings);
     Mesh mesh(settings);
     mesh.GenerateTorus(4.f, 0.9f);
+
+    Light light(settings);
+
     while (true)
     {
         SetCursorToHomePosition();
         mesh.Rotate(settings.GetMeshRotationXPerFrame(), Axis::X);
         mesh.Rotate(settings.GetMeshRotationYPerFrame(), Axis::Y);
         mesh.Rotate(settings.GetMeshRotationZPerFrame(), Axis::Z);
-        screen.Display(mesh);
+        screen.Display(mesh, light);
     }
     return 0;
 }

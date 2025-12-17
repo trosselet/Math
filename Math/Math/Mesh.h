@@ -2,6 +2,8 @@
 #include <cstdio>
 #include <vector>
 
+#include "Light.h"
+
 class Settings;
 
 constexpr float PI = 3.14159265f;
@@ -24,58 +26,65 @@ struct Vertex
     float ny;
     float nz;
 
+    float illumination;
+
     void Rotate(float angle, Axis axis)
     {
-		angle = angle * PI / 180.f;
-        float c = std::cos(angle);
+        angle = angle * PI / 180.f;
         float s = std::sin(angle);
-        float newx, newy, newz, newnx, newny, newnz;
+        float c = std::cos(angle);
+
+        float tx, ty, tz;
 
         switch (axis)
         {
         case Axis::X:
-            newx = x;
-            newy = y * c - z * s;
-            newz = y * s + z * c;
-            newnx = x;
-            newny = y * c - z * s;
-            newnz = y * s + z * c;
+            // Rotation du vertex
+            ty = y * c - z * s;
+            tz = y * s + z * c;
+            y = ty;
+            z = tz;
+            // Rotation de la normale
+            ty = ny * c - nz * s;
+            tz = ny * s + nz * c;
+            ny = ty;
+            nz = tz;
             break;
 
         case Axis::Y:
-            newx = x * c + z * s;
-            newnx = x * c + z * s;
-            newy = y;
-            newny = y;
-            newz = -x * s + z * c;
-            newnz = -x * s + z * c;
+            tx = x * c + z * s;
+            tz = -x * s + z * c;
+            x = tx;
+            z = tz;
+            tx = nx * c + nz * s;
+            tz = -nx * s + nz * c;
+            nx = tx;
+            nz = tz;
             break;
 
         case Axis::Z:
-            newx = x * c - y * s;
-            newnx = x * c - y * s;
-            newy = x * s + y * c;
-            newny = x * s + y * c;
-            newz = z;
-            newnz = z;
-            break;
-
-        default:
-            newx = x; 
-            newnx = x; 
-            newy = y; 
-            newny = y; 
-            newz = z;
-            newnz = z;
+            tx = x * c - y * s;
+            ty = x * s + y * c;
+            x = tx;
+            y = ty;
+            tx = nx * c - ny * s;
+            ty = nx * s + ny * c;
+            nx = tx;
+            ny = ty;
             break;
         }
+    }
 
-        x = newx; 
-        y = newy; 
-        z = newz;
-        nx = newnx; 
-        ny = newny; 
-        nz = newnz;
+    void ComputeIllumination(Light const& light)
+    {
+        float norm = std::sqrt(nx * nx + ny * ny + nz * nz);
+        float nnx = nx / norm;
+        float nny = ny / norm;
+        float nnz = nz / norm;
+
+        float dot = nnx * light.lx + nny * light.ly + nnz * light.lz;
+
+        illumination = (dot > 0.f) ? dot : 0.f;
     }
 };
 

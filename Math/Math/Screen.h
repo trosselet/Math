@@ -4,16 +4,17 @@
 class Settings;
 class Mesh;
 struct Vertex;
+class Light;
 
 class Screen
 {
     public:
     Screen(Settings const& settings);
     void Display() const;
-    void Display(Mesh const& mesh);
+    void Display(Mesh const& mesh, Light const& light);
 
     private:
-    void _ProjectMesh(Mesh const& mesh);
+    void _ProjectMesh(Mesh const& mesh, Light const& light);
     void _ProjectInCenterScreenSpace(Vertex& vertex);
     void _ProjectInTopLeftScreenSpace(Vertex& vertex);
     bool _IsVertexInScreen(int u, int v);

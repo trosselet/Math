@@ -3,6 +3,7 @@
 #include "Screen.h"
 #include "Settings.h"
 #include "Mesh.h"
+#include "Light.h"
 
 Screen::Screen(Settings const& settings)
 : m_width(settings.GetScreenWidth())
@@ -28,18 +29,27 @@ void Screen::Display() const
     }
 }
 
-void Screen::Display(Mesh const& mesh)
+void Screen::Display(Mesh const& mesh, Light const& light)
 {
     std::fill(m_pixels.begin(), m_pixels.end(), m_background);
-    _ProjectMesh(mesh);
+    _ProjectMesh(mesh, light);
     Display();
 }
 
-void Screen::_ProjectMesh(Mesh const& mesh)
+void Screen::_ProjectMesh(Mesh const& mesh, Light const& light)
 {
+    std::string brightnessChars = ".,-~:;=!*#$@";
+    int nChars = brightnessChars.size();
+
+
     std::fill(m_oozBuffer.begin(), m_oozBuffer.end(), 0.f);
     for(Vertex vertex : mesh.GetVertices())
     {
+        vertex.ComputeIllumination(light);
+        if (vertex.illumination <= 0.f)
+            continue;
+
+
         _ProjectInCenterScreenSpace(vertex);
         _ProjectInTopLeftScreenSpace(vertex);
         int u = std::round(vertex.x);
@@ -48,7 +58,8 @@ void Screen::_ProjectMesh(Mesh const& mesh)
         if(_IsVertexInScreen(u, v) && ooz > m_oozBuffer[v * m_width + u])
         {
             m_oozBuffer[v * m_width + u] = ooz;
-            m_pixels[v * m_width + u] = m_meshProjection;
+            int charIndex = std::round(vertex.illumination * (nChars - 1));
+            m_pixels[v * m_width + u] = brightnessChars[charIndex];
         }
     }
 }
