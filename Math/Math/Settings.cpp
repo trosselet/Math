@@ -13,9 +13,9 @@ Settings::Settings(int argc, char** argv)
 , m_meshRotationYPerFrame(0.4f)
 , m_meshRotationZPerFrame(0.0f)
 , m_frameDuration(100000)
-, m_lightDirectionX(1.0f)
+, m_lightDirectionX(0.0f)
 , m_lightDirectionY(-1.0f)
-, m_lightDirectionZ(0.5f)
+, m_lightDirectionZ(0.0f)
 
 {
     _ParseArguments(argc, argv);
@@ -24,7 +24,7 @@ Settings::Settings(int argc, char** argv)
 void Settings::_ParseArguments(int argc, char** argv)
 {
     // Elegant solution from @T.Rosselet
-    for (int i = 1; i < argc; i++) //i starts at 1 because command line arguments start with argv[1] (argv[0] is the name of the exe)
+    for (int i = 1; i < argc; i++)
     {
         std::string arg = argv[i];
         if (arg == "-w" && i + 1 < argc)

@@ -39,12 +39,12 @@ struct Vertex
         switch (axis)
         {
         case Axis::X:
-            // Rotation du vertex
+
             ty = y * c - z * s;
             tz = y * s + z * c;
             y = ty;
             z = tz;
-            // Rotation de la normale
+
             ty = ny * c - nz * s;
             tz = ny * s + nz * c;
             ny = ty;
@@ -56,6 +56,7 @@ struct Vertex
             tz = -x * s + z * c;
             x = tx;
             z = tz;
+
             tx = nx * c + nz * s;
             tz = -nx * s + nz * c;
             nx = tx;
@@ -67,6 +68,7 @@ struct Vertex
             ty = x * s + y * c;
             x = tx;
             y = ty;
+
             tx = nx * c - ny * s;
             ty = nx * s + ny * c;
             nx = tx;
@@ -78,6 +80,10 @@ struct Vertex
     void ComputeIllumination(Light const& light)
     {
         float norm = std::sqrt(nx * nx + ny * ny + nz * nz);
+
+        if (norm == 0)
+            return;
+
         float nnx = nx / norm;
         float nny = ny / norm;
         float nnz = nz / norm;

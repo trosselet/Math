@@ -43,13 +43,11 @@ void Screen::_ProjectMesh(Mesh const& mesh, Light const& light)
 
 
     std::fill(m_oozBuffer.begin(), m_oozBuffer.end(), 0.f);
+
     for(Vertex vertex : mesh.GetVertices())
     {
-        vertex.ComputeIllumination(light);
-        if (vertex.illumination <= 0.f)
-            continue;
-
-
+        
+        
         _ProjectInCenterScreenSpace(vertex);
         _ProjectInTopLeftScreenSpace(vertex);
         int u = std::round(vertex.x);
@@ -57,9 +55,19 @@ void Screen::_ProjectMesh(Mesh const& mesh, Light const& light)
         float ooz = 1.f / vertex.z;
         if(_IsVertexInScreen(u, v) && ooz > m_oozBuffer[v * m_width + u])
         {
-            m_oozBuffer[v * m_width + u] = ooz;
+            vertex.ComputeIllumination(light);
+
             int charIndex = std::round(vertex.illumination * (nChars - 1));
-            m_pixels[v * m_width + u] = brightnessChars[charIndex];
+            if (vertex.illumination > 0)
+            {
+                m_pixels[v * m_width + u] = ".,-~:;=!*#$@"[(int)(vertex.illumination * 12)];
+            }
+            else
+            {
+                m_pixels[v * m_width + u] = '.';
+            }
+
+            m_oozBuffer[v * m_width + u] = ooz;
         }
     }
 }
