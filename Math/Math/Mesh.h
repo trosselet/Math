@@ -96,7 +96,7 @@ struct Vertex
 
 class Mesh
 {
-    public:
+public:
     Mesh(Settings const& settings);
     std::vector<Vertex> const& GetVertices() const { return m_vertices; }
     void GenerateCircle(float radius);
@@ -104,13 +104,15 @@ class Mesh
     void GenerateRectangle(float width, float height);
     void GenerateSquare(float side);
     void GenerateTorus(float majorRadius, float minorRadius);
+    void GenerateCube(float side);
     void Rotate(float angle, Axis axis);
     void Debug() const;
 
-    private:
+private:
     void _GenerateSector(float radius, float angle);
+    int index(int face, int faceSize, int i, int j);
 
-    private:
+private:
     std::vector<Vertex> m_vertices;
     int m_resolution;
 };

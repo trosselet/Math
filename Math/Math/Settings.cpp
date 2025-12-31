@@ -9,13 +9,13 @@ Settings::Settings(int argc, char** argv)
 , m_screenPosition(30.f)
 , m_meshResolution(128)
 , m_meshPosition(10.f)
-, m_meshRotationXPerFrame(0.2f)
-, m_meshRotationYPerFrame(0.4f)
+, m_meshRotationXPerFrame(1.8f)
+, m_meshRotationYPerFrame(1.8f)
 , m_meshRotationZPerFrame(0.0f)
 , m_frameDuration(100000)
-, m_lightDirectionX(0.0f)
+, m_lightDirectionX(-0.3f)
 , m_lightDirectionY(-1.0f)
-, m_lightDirectionZ(0.0f)
+, m_lightDirectionZ(-1.0f)
 
 {
     _ParseArguments(argc, argv);

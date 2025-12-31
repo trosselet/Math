@@ -56,7 +56,7 @@ int main(int argc, char** argv)
     Settings settings(argc, argv);
     Screen screen(settings);
     Mesh mesh(settings);
-    mesh.GenerateTorus(4.f, 0.9f);
+    mesh.GenerateCube(6.f);
 
     Light light(settings);
 
