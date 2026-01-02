@@ -56,16 +56,16 @@ int main(int argc, char** argv)
     Settings settings(argc, argv);
     Screen screen(settings);
     Mesh mesh(settings);
-    mesh.LoadOBJ("Cube.obj");
+    mesh.LoadOBJ("T.obj");
 
     Light light(settings);
 
     while (true)
     {
         SetCursorToHomePosition();
-        mesh.Rotate(settings.GetMeshRotationXPerFrame(), Axis::X);
+        //mesh.Rotate(settings.GetMeshRotationXPerFrame(), Axis::X);
         mesh.Rotate(settings.GetMeshRotationYPerFrame(), Axis::Y);
-        mesh.Rotate(settings.GetMeshRotationZPerFrame(), Axis::Z);
+        //mesh.Rotate(settings.GetMeshRotationZPerFrame(), Axis::Z);
         screen.Display(mesh, light);
     }
     return 0;
