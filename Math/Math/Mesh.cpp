@@ -2,8 +2,10 @@
 #include "Mesh.h"
 #include "Settings.h"
 
+#include <iostream>
 #include <fstream>
 #include <sstream>
+#include <filesystem>
 
 Mesh::Mesh(Settings const& settings)
 : m_resolution(settings.GetMeshResolution())
@@ -183,9 +185,38 @@ void Mesh::GenerateCube(float side)
 
 void Mesh::LoadOBJ(const std::string& filename)
 {
-    std::ifstream file(filename);
-    if (!file)
+    std::filesystem::path exePath = std::filesystem::current_path();
+    std::filesystem::path path = exePath;
+
+    while (!path.empty())
+    {
+        std::filesystem::path testPath = path / "Assets";
+
+        if (std::filesystem::exists(testPath) && std::filesystem::is_directory(testPath))
+        {
+            path = testPath / filename;
+            break;
+        }
+
+        path = path.parent_path();
+    }
+
+    if (path.empty())
+    {
         return;
+    }
+
+    if (!std::filesystem::exists(path))
+    {
+        std::cout << "OBJ not found" << path << std::endl;
+        return;
+    }
+    
+    std::ifstream file(path);
+    if (!file)
+    {
+        return;
+    }
 
     std::vector<float> positions;
     std::vector<float> normals;

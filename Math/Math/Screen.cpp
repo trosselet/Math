@@ -90,6 +90,10 @@ void Screen::_ProjectMesh(Mesh const& mesh, Light const& light)
     const auto& verticies = mesh.GetVertices();
 
     const int threadCount = min(8, static_cast<int>(verticies.size()));
+
+    if (threadCount <= 0)
+        return;
+
     const int numberOfPart = static_cast<int>(verticies.size()) / threadCount;
 
     HANDLE threads[8];

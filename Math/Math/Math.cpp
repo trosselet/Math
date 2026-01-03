@@ -57,6 +57,7 @@ int main(int argc, char** argv)
     Screen screen(settings);
     Mesh mesh(settings);
     mesh.LoadOBJ("T.obj");
+    //mesh.GenerateCube(14.f);
 
     Light light(settings);
 
