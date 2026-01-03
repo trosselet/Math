@@ -15,6 +15,54 @@ Screen::Screen(Settings const& settings)
 , m_pixels(m_width * m_height, '.')
 , m_oozBuffer(m_width * m_height, 0.f)
 {
+    InitializeCriticalSection(&m_cs);
+}
+
+Screen::~Screen()
+{
+    DeleteCriticalSection(&m_cs);
+}
+
+DWORD WINAPI Screen::sProjectMeshThread(LPVOID param)
+{
+    ThreadData* data = static_cast<ThreadData*>(param);
+
+    auto& verticies = data->pMesh->GetVertices();
+    Screen* screen = data->pScreen;
+
+    for (unsigned int i = data->start; i < data->end; i++)
+    {
+        Vertex vertex = verticies[i];
+        screen->_ProjectInCenterScreenSpace(vertex);
+        screen->_ProjectInTopLeftScreenSpace(vertex);
+
+        int x = static_cast<int>(std::round(vertex.x));
+        int y = static_cast<int>(std::round(vertex.y));
+
+        if (!screen->_IsVertexInScreen(x, y))
+        {
+            continue;
+        }
+
+        float ooz = 1.f / vertex.z;
+        vertex.ComputeIllumination(*data->pLight);
+
+        int index = y * screen->m_width + x;
+
+        EnterCriticalSection(&screen->m_cs);
+
+        if (ooz > screen->m_oozBuffer[index])
+        {
+            screen->m_oozBuffer[index] = ooz;
+            screen->m_pixels[index] = ".,-~:;=!*#$@"[(int)(vertex.illumination * 12)];
+        }
+
+        LeaveCriticalSection(&screen->m_cs);
+
+    }
+
+
+    return 0;
 }
 
 void Screen::Display() const
@@ -38,38 +86,55 @@ void Screen::Display(Mesh const& mesh, Light const& light)
 
 void Screen::_ProjectMesh(Mesh const& mesh, Light const& light)
 {
-    std::string brightnessChars = ".,-~:;=!*#$@";
-    int nChars = brightnessChars.size();
-
-
     std::fill(m_oozBuffer.begin(), m_oozBuffer.end(), 0.f);
+    const auto& verticies = mesh.GetVertices();
 
-    for(Vertex vertex : mesh.GetVertices())
+    const int threadCount = min(8, static_cast<int>(verticies.size()));
+    const int numberOfPart = static_cast<int>(verticies.size()) / threadCount;
+
+    HANDLE threads[8];
+    ThreadData data[8];
+
+    for (unsigned int i = 0; i < threadCount; i++)
     {
-        
-        
-        _ProjectInCenterScreenSpace(vertex);
-        _ProjectInTopLeftScreenSpace(vertex);
-        int u = std::round(vertex.x);
-        int v = std::round(vertex.y);
-        float ooz = 1.f / vertex.z;
-        if(_IsVertexInScreen(u, v) && ooz > m_oozBuffer[v * m_width + u])
+        unsigned int end = 0;
+
+        if (i == threadCount - 1)
         {
-            vertex.ComputeIllumination(light);
-
-            int charIndex = std::round(vertex.illumination * (nChars - 1));
-            if (vertex.illumination > 0)
-            {
-                m_pixels[v * m_width + u] = ".,-~:;=!*#$@"[(int)(vertex.illumination * 12)];
-            }
-            else
-            {
-                m_pixels[v * m_width + u] = '.';
-            }
-
-            m_oozBuffer[v * m_width + u] = ooz;
+            end = static_cast<unsigned int>(verticies.size());
         }
+        else
+        {
+            end = (i + 1) * numberOfPart;
+        }
+
+        data[i] =
+        {
+            this,
+            &mesh,
+            &light,
+            i * numberOfPart,
+            end
+        };
+
+        threads[i] = CreateThread(
+            nullptr,
+            0,
+            Screen::sProjectMeshThread,
+            &data[i],
+            0,
+            nullptr
+        );
+
     }
+
+    WaitForMultipleObjects(threadCount, threads, TRUE, INFINITE);
+
+    for (int i = 0; i < threadCount; i++)
+    {
+        CloseHandle(threads[i]);    
+    }
+
 }
 
 void Screen::_ProjectInCenterScreenSpace(Vertex& vertex)
