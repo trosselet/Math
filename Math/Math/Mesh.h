@@ -106,6 +106,7 @@ public:
     void GenerateSquare(float side);
     void GenerateTorus(float majorRadius, float minorRadius);
     void GenerateCube(float side);
+    void Prism(float width, float height, float depth);
     void LoadOBJ(const std::string& filename);
     void Rotate(float angle, Axis axis);
     void Debug() const;

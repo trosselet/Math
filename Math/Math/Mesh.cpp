@@ -183,6 +183,79 @@ void Mesh::GenerateCube(float side)
     }
 }
 
+void Mesh::Prism(float width, float height, float depth)
+{
+    const float hw = width * 0.5f;
+    const float hh = height * 0.5f;
+    const float hd = depth * 0.5f;
+
+    const int faceSize = m_resolution * m_resolution;
+    m_vertices.resize(6 * faceSize);
+
+    for (int i = 0; i < m_resolution; i++)
+    {
+        float u = (float)i / (m_resolution - 1) - 0.5f;
+        for (int j = 0; j < m_resolution; j++)
+        {
+            float v = (float)j / (m_resolution - 1) - 0.5f;
+
+            // Face avant (+Z)
+            {
+                Vertex& vert = m_vertices[index(0, faceSize, i, j)];
+                vert.x = u * width;
+                vert.y = v * height;
+                vert.z = +hd;
+                vert.nx = 0; vert.ny = 0; vert.nz = 1;
+            }
+
+            // Face arrière (-Z)
+            {
+                Vertex& vert = m_vertices[index(1, faceSize, i, j)];
+                vert.x = u * width;
+                vert.y = v * height;
+                vert.z = -hd;
+                vert.nx = 0; vert.ny = 0; vert.nz = -1;
+            }
+
+            // Face droite (+X)
+            {
+                Vertex& vert = m_vertices[index(2, faceSize, i, j)];
+                vert.x = +hw;
+                vert.y = u * height;
+                vert.z = v * depth;
+                vert.nx = 1; vert.ny = 0; vert.nz = 0;
+            }
+
+            // Face gauche (-X)
+            {
+                Vertex& vert = m_vertices[index(3, faceSize, i, j)];
+                vert.x = -hw;
+                vert.y = u * height;
+                vert.z = v * depth;
+                vert.nx = -1; vert.ny = 0; vert.nz = 0;
+            }
+
+            // Face haut (+Y)
+            {
+                Vertex& vert = m_vertices[index(4, faceSize, i, j)];
+                vert.x = u * width;
+                vert.y = +hh;
+                vert.z = v * depth;
+                vert.nx = 0; vert.ny = 1; vert.nz = 0;
+            }
+
+            // Face bas (-Y)
+            {
+                Vertex& vert = m_vertices[index(5, faceSize, i, j)];
+                vert.x = u * width;
+                vert.y = -hh;
+                vert.z = v * depth;
+                vert.nx = 0; vert.ny = -1; vert.nz = 0;
+            }
+        }
+    }
+}
+
 void Mesh::LoadOBJ(const std::string& filename)
 {
     std::filesystem::path exePath = std::filesystem::current_path();
