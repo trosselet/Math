@@ -1,10 +1,11 @@
 #pragma once
 #include <vector>
 #include <windows.h>
+#include "Mesh.h"
 
 class Settings;
-class Mesh;
-struct Vertex;
+
+
 class Light;
 
 
@@ -16,12 +17,12 @@ public:
     Screen(Settings const& settings);
     ~Screen();
     void Display() const;
-    void Display(Mesh const& mesh, Light const& light);
+    void Display(Grp1::Mesh const& mesh, Light const& light);
 
 private:
-    void _ProjectMesh(Mesh const& mesh, Light const& light);
-    void _ProjectInCenterScreenSpace(Vertex& vertex);
-    void _ProjectInTopLeftScreenSpace(Vertex& vertex);
+    void _ProjectMesh(Grp1::Mesh const& mesh, Light const& light);
+    void _ProjectInCenterScreenSpace(Grp1::Vertex& vertex);
+    void _ProjectInTopLeftScreenSpace(Grp1::Vertex& vertex);
     bool _IsVertexInScreen(int u, int v);
     
     static DWORD WINAPI sProjectMeshThread(LPVOID param);
@@ -42,7 +43,7 @@ private:
 struct ThreadData
 {
     Screen* pScreen = nullptr;
-    Mesh const* pMesh = nullptr;
+    Grp1::Mesh const* pMesh = nullptr;
     Light const* pLight = nullptr;
     unsigned int start = 0;
     unsigned int end = 0;

@@ -2,8 +2,9 @@
 #include <cmath>
 #include "Screen.h"
 #include "Settings.h"
-#include "Mesh.h"
 #include "Light.h"
+
+using namespace Grp1;
 
 Screen::Screen(Settings const& settings)
 : m_width(settings.GetScreenWidth())
@@ -32,7 +33,7 @@ DWORD WINAPI Screen::sProjectMeshThread(LPVOID param)
 
     for (unsigned int i = data->start; i < data->end; i++)
     {
-        Vertex vertex = verticies[i];
+        Grp1::Vertex vertex = verticies[i];
         screen->_ProjectInCenterScreenSpace(vertex);
         screen->_ProjectInTopLeftScreenSpace(vertex);
 
@@ -77,14 +78,14 @@ void Screen::Display() const
     }
 }
 
-void Screen::Display(Mesh const& mesh, Light const& light)
+void Screen::Display(Grp1::Mesh const& mesh, Light const& light)
 {
     std::fill(m_pixels.begin(), m_pixels.end(), m_background);
     _ProjectMesh(mesh, light);
     Display();
 }
 
-void Screen::_ProjectMesh(Mesh const& mesh, Light const& light)
+void Screen::_ProjectMesh(Grp1::Mesh const& mesh, Light const& light)
 {
     std::fill(m_oozBuffer.begin(), m_oozBuffer.end(), 0.f);
     const auto& verticies = mesh.GetVertices();
@@ -141,14 +142,14 @@ void Screen::_ProjectMesh(Mesh const& mesh, Light const& light)
 
 }
 
-void Screen::_ProjectInCenterScreenSpace(Vertex& vertex)
+void Screen::_ProjectInCenterScreenSpace(Grp1::Vertex& vertex)
 {
     vertex.z += m_meshZPosition;
     vertex.x = m_zPosition * vertex.x / vertex.z;
     vertex.y = m_zPosition * vertex.y / vertex.z / 2.f;
 }
 
-void Screen::_ProjectInTopLeftScreenSpace(Vertex& vertex)
+void Screen::_ProjectInTopLeftScreenSpace(Grp1::Vertex& vertex)
 {
     vertex.x += m_width / 2;
     vertex.y += m_height / 2;
